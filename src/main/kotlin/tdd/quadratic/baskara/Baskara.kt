@@ -6,13 +6,20 @@ import java.math.MathContext
 class Baskara {
     fun calculate(a: BigDecimal, b: BigDecimal, c: BigDecimal): Set<BigDecimal> {
         val twoTimesA = a.multiply(BigDecimal(2))
-        val squareRootDelta = Delta.calculate(a,b,c).sqrt(MathContext(10))
-        val minusB = b.negate()
+        val delta = Delta.calculate(a,b,c)
 
-        return setOf(
-            minusB.plus(squareRootDelta).divide(twoTimesA),
-            minusB.minus(squareRootDelta).divide(twoTimesA)
-        )
+        try {
+            val squareRootDelta = delta.sqrt(MathContext(10))
+            val minusB = b.negate()
+
+            return setOf(
+                minusB.plus(squareRootDelta).divide(twoTimesA),
+                minusB.minus(squareRootDelta).divide(twoTimesA)
+            )
+        } catch(e: ArithmeticException){
+            return emptySet()
+        }
+
 
     }
 }
